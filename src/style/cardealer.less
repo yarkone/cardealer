@@ -1,0 +1,78 @@
+.info-table {
+	border-collapse: collapse;
+    empty-cells:show;
+    border: none;
+    tr {
+    	td {
+	    	padding: 5px 5px; 
+	    	text-align: left;
+	    	width: 230px;
+	    	.iconfont {
+	    		margin-right: 5px;
+	    		position: relative;
+	    		top: 2px;
+	    	}
+		}
+    }
+}
+.pwd-status {
+	float: left;
+	width: 100px;
+	height: 100px;
+}
+.pwd-title {
+	margin: 10px;
+	margin-left: 105px;
+	line-height: 25px;
+}
+
+.square {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	border: 1px solid @borderColor;
+	text-align: center;
+	background-color: #FFF;
+	margin-right: 10px;
+	.borderRadius(3px);
+	&:hover {
+		border-color: @mainColor;
+	}
+	&&-edit {
+		.iconfont {
+			color: #88abda;
+		}
+	}
+	&&-delete {
+		.iconfont {
+			color: @msgErr;
+		}
+	}
+	&&-up {
+		.iconfont {
+			color: @mainColor;
+		}
+	}
+	&&-down {
+		.iconfont {
+			color: @buttonBgColor;
+		}
+	}
+	&&-disabled {
+		&:hover {
+			border-color: @borderColor;
+			cursor: not-allowed;
+		}
+		.iconfont {
+			color: #FFF;
+		}
+		background-color: lighten(@borderColor, 8%);
+	}
+	.iconfont {
+		line-height: 30px;
+	}
+}
+
+.to-edit {
+	
+}

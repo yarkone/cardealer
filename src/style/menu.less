@@ -1,0 +1,140 @@
+//菜单栏
+.menu {
+	position: fixed;
+	z-index: 10;
+	left: 0;
+	top: 60px;
+	bottom: 0;
+	width: 200px; 
+	overflow-x: hidden;
+	border-right: 1px solid @borderColor;
+	background: #fff;
+	.mark{
+		margin-right: 13px;
+		position: relative;
+		top: 2px;
+	}
+	a.menu-item, a.menu-group-item, .menu-group-title {
+        position: relative;
+		display: block;
+		cursor: pointer;
+		color: @fontColor;
+		&:hover {
+		    color: @menuActiveColor;
+			background-color: #f0eefc;
+		}
+	}
+	.menu-item, .menu-group-title {
+		position: relative;
+		padding-left: 25px;
+	}
+	.menu-item {
+		height: 55px;
+		line-height: 55px;
+	}
+	.menu-group {
+		.menu-group-item {
+			padding-left: 58px;
+		}
+		.menu-group-title {
+		    height: 55px;
+            line-height: 55px;
+            cursor: pointer;
+            .iconfont-arrow {
+                position: absolute;
+                right: 25px;
+                top: 0;
+                font-size: 12px;
+                -webkit-transition: all .25s;
+                   -moz-transition: all .25s;
+                    -ms-transition: all .25s;
+                     -o-transition: all .25s;
+                        transition: all .25s;
+                -webkit-transform: rotate(180deg);
+                   -moz-transform: rotate(180deg);
+                    -ms-transform: rotate(180deg);
+                     -o-transform: rotate(180deg);
+                        transform: rotate(180deg);
+            }
+            &.menu-group-title-active {
+                background-color: @menuHoverBgColor;
+                .iconfont-arrow { 
+                    -webkit-transform: rotate(0);
+                       -moz-transform: rotate(0);
+                        -ms-transform: rotate(0);
+                         -o-transform: rotate(0);
+                            transform: rotate(0);
+                }
+                &:hover {
+                    background-color: @menuHoverBgColor;
+                    color: @fontColor;
+                }
+            }
+		}
+		.menu-group-item {
+			height: 55px;
+			line-height: 55px;
+			cursor: pointer;
+            color: #667183;
+		}
+	}
+	.menu-item-active {
+	    color: @menuActiveColor !important;    
+	    background-color: @menuActiveBgColor;
+	    &:before {
+	        position: absolute;
+	        left: 0;
+	        top: 0;
+            bottom: 0;
+	        content:" ";
+	        width: 4px;
+	        background-color: @menuActiveColor;
+	    }
+	}
+}
+
+.showHide {
+	position: fixed;
+	z-index: 5;
+	left: 200px;
+	top: 50%;
+	margin-top: -25px;
+	display: block;
+	width: 20px;
+	height: 50px;
+	outline: none;
+	// border: 1px solid #000; 
+	// background-color: red;
+	transition: all 150ms ease 0;
+	&:hover {
+		.showHide-bg {
+			border-top: 9px solid transparent;
+			border-bottom: 9px solid transparent;
+			border-right: none;
+			border-left: 20px solid #717ea1;
+		}
+	}
+	.showHide-bg {
+		position: absolute;
+		width: 0;
+		height: 50px;
+		border-top: 9px solid transparent;
+		border-bottom: 9px solid transparent;
+		border-right: none;
+		border-left: 16px solid #717ea1;
+		transition: all 0.15s;
+		-moz-transition: all 0.15s; /* Firefox 4 */
+		-webkit-transition: all 0.15s; /* Safari and Chrome */
+		-o-transition: all 0.15s; /* Opera */
+		.iconfont {
+			position: absolute;
+			right: 0;
+			top: 50%;
+			margin-top: -8px;
+			color: #FFF;
+		}
+	}
+	
+}
+
+// .menu::-webkit-scrollbar{width:0px}

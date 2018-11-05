@@ -1,0 +1,51 @@
+//待办提醒
+.remind {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    z-index: 99999;
+    //待办提醒未展开
+    .remind-tips{
+        width: 44px;
+        border: 1px solid @borderColor;
+        border-right: none;
+        text-align: center;
+        padding: 18px 0;
+        cursor: pointer;
+        background-color: #f3f4f9;
+        .remind-tips-text {
+            font-size: 14px;
+            width: 18px;
+            margin: 0 auto 10px auto;
+        }
+    }
+    //待办提醒展开部分
+    .remind-content {
+        position: absolute;
+        z-index: 10000000;
+        left: 44px;
+        top: 0;
+        width: 155px;
+        // min-height: 159px;
+        min-height: 570px;
+        background-color: #FFF;
+        padding: 9px 0 9px 15px;
+        border-top: 1px solid @borderColor;
+        border-left: 1px solid @borderColor;
+        .remind-box .remind-item{
+            padding-left: 5px;
+            .borderRadius(3px);
+            position: relative;
+            line-height: 33px;
+            cursor: pointer;
+            &:hover {
+                background-color: @borderColor;
+            }
+            .message-number {
+                position: absolute;
+                right: 3px;
+                top: 8px;
+            }
+        }
+    }
+}

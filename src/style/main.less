@@ -1,0 +1,59 @@
+@import (reference) "defined.less";
+@import (less) "public.less";
+@import (less) "global.less";
+@import (less) "componements.less";
+@import (less) "menu.less";
+@import (less) "navigator.less";
+@import (less) "console.less";
+@import (less) "fastflip.less";
+@import (less) "mycustomer.less";
+@import (less) "remind.less";
+@import (less) "sidebar.less";
+@import (less) "cardealer.less";
+@import (less) "media.less";
+
+input[type=radio] {
+    width: 20px;
+    height: 20px;
+    display: inline-block; 
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid @mainColor;
+    box-sizing: border-box;
+    // position: absolute;
+    // top: 50%;
+    // margin-top: -10px;
+    // left: 50%;
+    // margin-left: -10px;
+    position: relative;
+    top: 5px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    border-radius: 1em;
+    &:hover {
+        border-color: @mainColor;
+    }
+    &:active {
+        border-color: #c6c6c6;
+        // background: #ebebeb;
+    }
+    &:checked {
+        // background: #fff;
+        border: 1px solid @mainColor;
+        &:after {
+            content: '';
+            display: block;
+            position: relative;
+            top: 4px;
+            left: 4px;
+            width: 10px;
+            height: 10px;
+            background: @mainColor;
+            border-radius:50%;
+        }
+    }
+}
+
