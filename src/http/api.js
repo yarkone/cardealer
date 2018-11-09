@@ -2,14 +2,15 @@
  * @Author: yarkone 
  * @Date: 2018-09-10 17:39:52 
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-05 16:54:20
+ * @Last Modified time: 2018-11-09 18:39:16
  */
 import axios from 'axios'
 import config from './config'
 import qs from 'qs'
 import Cookies from "js-cookie"
-import { Loading, MessageBox } from 'element-ui'
+import { Loading, MessageBox, Message } from 'element-ui'
 import router from '@/router'
+import { tool } from '../mixins/tool'
 import store from '@/store'
 // 使用vuex做全局loading时使用
 // import store from '@/store'
@@ -38,8 +39,10 @@ export default function $axios(options) {
         if (token) {
           config.headers.Authorization = 'Bearer ' + token
         } else {
-          // 重定向到登录页面
-          router.push('/login')
+            if(router.history.current.path != '/') {
+                // 如果不是首页且token已不存在，需重定向到登录页面
+                router.push('/');
+            }
         }
         // 3. 根据请求方法，序列化传来的参数，根据后端需求是否序列化
         if (config.method === 'post') {
@@ -98,11 +101,24 @@ export default function $axios(options) {
             return data;
           default:
             //处理错误
-            console.log('错误')
-            MessageBox(data.msg || '', '提示', {
-              // lockScroll: false,
-              center: true
-            });
+            console.log('非法code:' + data.code)
+            if(router.history.current.path == '/') {console.log('hhhhhhhhhhhhh');
+                // 如果是登录页
+                MessageBox('登录失败，检查后再重试', '提示', {
+                    showClose: false
+                });
+            } else {
+                MessageBox(data.msg || '', '提示', {
+                    showClose: false
+                }).then(() => {
+                    tool.clearCookies();
+                    Message({
+                        type: 'success',
+                        message: '退出成功'
+                    });
+                    router.push('/');
+                });
+            }
             return Promise.reject(data);
             // return Promise.reject('error')
             // return false;

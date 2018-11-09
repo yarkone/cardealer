@@ -2,7 +2,7 @@
  * @Author: yarkone
  * @Date: 2018-09-11 11:34:57
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-05 16:53:12
+ * @Last Modified time: 2018-11-09 18:18:01
  */
 import axios from './api'
 
@@ -28,9 +28,9 @@ export const doLogout = () => {
     })
 }
 
-export const query = () => {
+export const msgInterval = () => {
     return axios({
-        url: '/query',
+        url: '/busiMsg/get?pageNum=1&pageSize=5',
         method: 'get'
     })
 }
@@ -54,7 +54,7 @@ export const upload = data => {
 export default {
     doLogin,
     doLogout,
-    query,
+    msgInterval,
     list,
     upload
 }
