@@ -2,7 +2,7 @@
  * @Author: yarkone 
  * @Date: 2018-11-05 10:22:51 
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-14 14:02:48
+ * @Last Modified time: 2018-11-19 15:39:06
  */
 import Cookies from 'js-cookie'
 
@@ -42,5 +42,14 @@ export const tool = {
 			return l + s;
 		}
 		return s;
+    },
+    /**
+	 * 添加判断是否为空对象的方法
+	 */
+	isEmptyObject: function(e) {
+	    var t;
+	    for (t in e)
+	        return !1;
+	    return !0
 	}
 }

@@ -8,9 +8,9 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'login',
-      component: login
+        path: '/',
+        name: 'login',
+        component: login
     },
     // {
     //     path: '/login',
@@ -18,9 +18,14 @@ export default new Router({
     //     component: login
     // },
     {
-      path: '/index',
-      name: 'index',
-      component: index
-    }
+        path: '/index',
+        name: 'index',
+        component: index
+    },
+    // {
+    //     path: '/loanProcess',
+    //     name: 'loanProcess',
+    //     component: loanProcess
+    // }
   ]
 })

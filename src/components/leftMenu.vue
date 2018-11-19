@@ -1,101 +1,57 @@
 <template>
-    <!-- 导航条 -->
-	<div class="navigator">
-		<a class="logo-field">
-			<span class="logo"><img src="../assets/img/public/logo.png" alt=""></span>
-			车商端基础配置
-		</a>
-		<ul class="user-field">
-			<li class="user-li QR-Code" data-item="QR-Code">
-				<a href="javascript:;" class="user-field-item"><i class="iconfont">&#xe600;</i></a>
-				<div class="user-li-inner QR-Code-area">
-					<img src="../assets/img/QR-Code-online.png" class="QR-Code-img"/>
-					<br />
-					<span class="QR-Code-text">打开手机扫一扫</span>
-				</div>
-			</li>
-			<li class="user-li message" data-item="message">
-				<a href="javascript:;" class="user-field-item message-a">
-					<i class="iconfont">&#xe6b4;</i>
-					<span class="message-number" id="msgCounter">0</span>
-				</a>
-				<div class="user-li-inner message-area">
-					<ul class="message-panel" id="messagePanel"></ul>
-				</div>
-			</li>
-			<li class="user-li user" data-item="user" id="userPanel">
-				<a class="user-field-item">
-                    <span class="user-field-item-text" v-bind:title="userName" >{{userName}}</span>
-                    <i class="iconfont iconfont-arrow">&#xe621;</i>
-                </a>
-				<div class="user-li-inner user-area">
-					<div class="user-area-top">
-						<dl class="user-panel">
-							<dt class="user-panel-key">机构：</dt>
-							<dd class="user-panel-value">
-								哈哈哈
-							</dd>
-						</dl>
-						<dl class="user-panel">
-							<dt class="user-panel-key">职位：</dt>
-							<dd class="user-panel-value">总监</dd>
-						</dl>
-						<dl class="user-panel">
-							<dt class="user-panel-key">手机：</dt>
-							<dd class="user-panel-value">
-								未绑定
-								<a class="phone-bind navEvt" data-id="bind">绑定</a>
-							</dd>
-						</dl>
-					</div>
-					<div class="user-area-bottom clearfix">
-						<a class="modify-pwd navEvt" data-id="password">修改密码</a>
-						<a class="user-quit navEvt" @click="doLogout" data-id="exit">退出登录</a>
-					</div>
-				</div>
-			</li>
-		</ul>
-	</div>
-	<!-- 导航条 end-->
+    <el-menu :default-active="defaultActive" style="position: fixed;z-index: 10;left: 0;top: 60px;bottom: 0;width: 200px; overflow-x: hidden;border-radius:0;" theme="dark" router>
+        <template v-for="(item, index) in menuObj" >
+            <template v-if="!item.length">
+                <el-menu-item index="index" :key="index"><i class="el-icon-menu"></i>{{index}}{{menuTreeMap[index]}}{{menuTreeMap.loanProcess.name}}</el-menu-item>
+            </template>
+            <template v-else>
+                <el-submenu :index="item.length.toString()" :key="index">
+                    <template slot="title"><i class="el-icon-document"></i>{{menuTreeMap[index]}}</template>
+                    <template v-for="(item1, index2) in item" >
+                        <el-menu-item :index="item1" :key="index2">{{menuTreeMap[index]}}</el-menu-item>
+                    </template>
+                </el-submenu>
+            </template>
+        </template>
+    </el-menu>
 </template>
 
 <script>
     import Cookies from 'js-cookie'
     import { tool } from '../mixins/tool'
+    import { menuTreeMap } from '../mixins/menuTreeMap'
 
     export default {
-        name: 'headTop',
+        name: 'leftMenu',
         data () {
 			return {
-                userName: Cookies.get('_hr_userName') || ''
+                menuObj: {},
+                menuTreeMap: {}
             }
-		},
-		// beforeCreate () {
-		// 	if(!Cookies.get('_hr_token')) {
-		// 		this.$message({
-		// 			type: 'success',
-		// 			message: '退出成功'
-		// 		});
-        //         this.$router.push('/');
-        //     }
-		// },
+        },
+        created () {
+            let that = this;
+            that.$api.menuTree().then(res => {
+                console.log(res);
+                this.menuObj = res.data;
+                this.menuTreeMap = menuTreeMap;
+                // console.log(menuTreeMap)
+                // console.log(menuTreeMap['loanProcess'].name)
+            }).catch(error => {
+                console.log(error);
+            })
+        },
 		mounted () {
 			
 		},
         methods: {
-            doLogout () {
-                this.$api.doLogout().then(res => {
-                    tool.clearCookies();
-                    this.$message({
-                        type: 'success',
-                        message: '退出成功'
-                    });
-                    this.$router.push('/');
-                }).catch(error => {
-                    console.log(error);
-                })
-            }
-        }
+            
+        },
+        computed: {
+			defaultActive: function(){
+				return this.$route.path.replace('/', '');
+			}
+		}
     }
 </script>
 
@@ -103,5 +59,5 @@
 	@import "../style/defined";
 	@import '../style/public';
 	@import '../style/components';
-    @import '../style/headTop';
+    @import '../style/menu';
 </style>

@@ -2,7 +2,7 @@
  * @Author: yarkone
  * @Date: 2018-09-11 11:34:57
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-14 11:42:24
+ * @Last Modified time: 2018-11-19 15:35:57
  */
 import axios from './api'
 
@@ -29,9 +29,18 @@ export const doLogout = data => {
     })
 }
 
+//消息请求接口
 export const msgInterval = () => {
     return axios({
         url: '/busiMsg/get?pageNum=1&pageSize=5',
+        method: 'get'
+    })
+}
+
+//菜单树接口
+export const menuTree = () => {
+    return axios({
+        url: '/menu/tree',
         method: 'get'
     })
 }
@@ -56,6 +65,9 @@ export default {
     doLogin,
     doLogout,
     msgInterval,
+    menuTree,
+
+
     list,
     upload
 }

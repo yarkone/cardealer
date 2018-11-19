@@ -3,7 +3,7 @@
 	<div class="navigator">
 		<a class="logo-field">
 			<span class="logo"><img src="../assets/img/public/logo.png" alt=""></span>
-			车商端基础配置
+			惠瀜车贷业务云
 		</a>
 		<ul class="user-field">
 			<li class="user-li QR-Code" data-item="QR-Code">
@@ -127,7 +127,8 @@ import { setInterval } from 'timers';
 
 <style lang="less">
 	@import "../style/defined";
-	@import '../style/public';
+    @import '../style/public';
+    @import '../style/keyframes';
 	@import '../style/components';
-    @import '../style/headTop';
+    @import '../style/headTop';    
 </style>

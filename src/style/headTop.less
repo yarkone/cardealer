@@ -44,26 +44,6 @@
             text-align: center;
             cursor: pointer;
             background-color: @mainColor;
-            &.user .user-field-item .iconfont-arrow {
-                -webkit-transition: all .25s;
-                    -moz-transition: all .25s;
-                        -ms-transition: all .25s;
-                            -o-transition: all .25s;
-                                transition: all .25s;
-            }
-            &:hover {
-                background-color: #6347bd;
-                .user-li-inner {
-                    display: block;
-                }
-                &.user .user-field-item .iconfont-arrow {
-                    -webkit-transform: rotate(180deg);
-                        -moz-transform: rotate(180deg);
-                            -ms-transform: rotate(180deg);
-                                -o-transform: rotate(180deg);
-                                    transform: rotate(180deg);
-                }
-            }
             .user-field-item {
                 color: #fff;
             }
@@ -79,6 +59,30 @@
                 line-height: normal;
                 cursor: default;
             }
+
+            &.user .user-field-item .iconfont-arrow {
+                -webkit-transition: all .25s;
+                    -moz-transition: all .25s;
+                        -ms-transition: all .25s;
+                            -o-transition: all .25s;
+                                transition: all .25s;
+            }
+            &:hover {
+                background-color: #6347bd;
+                .user-li-inner {
+                    -webkit-animation: fadeIn 0.5s ease-in-out 1 alternate;
+                    animation: fadeIn 0.5s ease-in-out 1 alternate;
+                    display: block;
+                }
+                &.user .user-field-item .iconfont-arrow {
+                    -webkit-transform: rotate(180deg);
+                        -moz-transform: rotate(180deg);
+                            -ms-transform: rotate(180deg);
+                                -o-transform: rotate(180deg);
+                                    transform: rotate(180deg);
+                }
+            }
+            
 
             &.QR-Code {
                 line-height: 60px;
