@@ -2,7 +2,7 @@
  * @Author: yarkone 
  * @Date: 2018-09-10 17:39:52 
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-09 18:39:16
+ * @Last Modified time: 2018-11-14 11:45:00
  */
 import axios from 'axios'
 import config from './config'
@@ -97,7 +97,6 @@ export default function $axios(options) {
         // 根据返回的code值来做不同的处理
         switch (data.code) {
           case 0:
-            console.log('成功');
             return data;
           default:
             //处理错误

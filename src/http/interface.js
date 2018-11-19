@@ -2,7 +2,7 @@
  * @Author: yarkone
  * @Date: 2018-09-11 11:34:57
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-09 18:18:01
+ * @Last Modified time: 2018-11-14 11:42:24
  */
 import axios from './api'
 
@@ -21,10 +21,11 @@ export const doLogin = data => {
 }
 
 // 退出登录接口
-export const doLogout = () => {
+export const doLogout = data => {
     return axios({
-        url: '/login/doLogout',
-        method: 'get'
+        url: '/logout',
+        method: 'post',
+        data
     })
 }
 

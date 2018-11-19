@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view msg="车商端基础配置系统"/>
+    <router-view msg="惠瀜车贷业务云"/>
   </div>
 </template>
 

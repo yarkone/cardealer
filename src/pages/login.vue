@@ -69,12 +69,13 @@
                     if (valid) {
                         let params = {
                             account: this.loginForm.username,
-                            password: md5(this.loginForm.password)
+                            password: md5(this.loginForm.password),
+                            LoginAgent: 'WEB'
                         };
                         this.$api.doLogin(params).then(res => {
                             if(res.data && res.data.token) {
                                 Cookies.set('_hr_token', res.data.token);
-                                Cookies.set('_hr_userName', res.data.role && res.data.role.name || '');
+                                Cookies.set('_hr_userName', res.data.loginInfo && res.data.loginInfo.name || '');
                             }
                             this.$message({
                                 type: 'success',

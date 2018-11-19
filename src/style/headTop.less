@@ -114,6 +114,50 @@
                         top: -8px;
                     }
                 }
+                // 消息列表
+                .message-area {
+                    width: 325px;
+                    padding: 5px 20px;
+                    .message-panel {
+                        margin: 0 auto;
+                        .message-item {
+                            line-height: 40px;
+                            border-bottom: 1px dashed @borderColor;
+                            &:last-child {
+                                border: none;
+                            }
+                            .textCenter {
+                                text-align: center;
+                            }
+                            .message-item-data {
+                                float: left;
+                                display: inline-block;
+                                text-align: left;
+                                width: 205px;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                a {
+                                    cursor: pointer;
+                                    color: @fontColor;
+                                    &:hover {
+                                        color: @mainColor;
+                                    }
+                                }
+                            }
+                            .message-more,
+                            .message-time {
+                                float: right;
+                            }
+                            .message-time {
+                                color: #90a4ae;
+                            }
+                            .message-more {
+                                color: #3cb4f3;
+                            }
+                        }
+                    }
+                }
             }
 
             &.user {

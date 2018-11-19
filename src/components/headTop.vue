@@ -20,7 +20,21 @@
 					<span class="message-number" id="msgCounter">0</span>
 				</a>
 				<div class="user-li-inner message-area">
-					<ul class="message-panel" id="messagePanel"></ul>
+					<ul class="message-panel">
+                        <template v-if="busiMsgs.length">
+                            <li class="message-item clearfix" v-for="(item, index) in busiMsgs" :key="index">
+                                <div class="message-item-data">
+                                    <a class="msgEvt" v-bind:title="item.title" >{{item.title}}</a>
+                                </div>
+                                <span class="message-time">{{item.createDate}}</span>
+                            </li>
+                        </template>
+                        <template v-else>
+                            <li class="message-item clearfix" >暂无新消息</li>
+                        </template>
+                        
+                        <li class="message-item clearfix"><a href="#message" class="message-more">更多&gt;&gt;</a></li>
+                    </ul>
 				</div>
 			</li>
 			<li class="user-li user" data-item="user" id="userPanel">
@@ -68,25 +82,21 @@ import { setInterval } from 'timers';
         name: 'headTop',
         data () {
 			return {
-                userName: Cookies.get('_hr_userName') || ''
+                userName: Cookies.get('_hr_userName') || '',
+                busiMsgs: []
             }
 		},
-		// beforeCreate () {
-		// 	if(!Cookies.get('_hr_token')) {
-		// 		this.$message({
-		// 			type: 'success',
-		// 			message: '退出成功'
-		// 		});
-        //         this.$router.push('/');
-        //     }
-		// },
 		mounted () {
             let that = this;
             that.$api.msgInterval().then(res => {
-                    console.log(res);
-                }).catch(error => {
-                    console.log(error);
-                })
+                console.log(res);
+                this.busiMsgs = res.data.busiMsgs;
+                this.busiMsgs.forEach(function(item ,index) {
+                    item.createDate = tool.formatDate(item.createDate);
+                });
+            }).catch(error => {
+                console.log(error);
+            })
             // setInterval(() => {
             //     that.$api.msgInterval().then(res => {
             //         console.log(res);
@@ -97,7 +107,10 @@ import { setInterval } from 'timers';
 		},
         methods: {
             doLogout () {
-                this.$api.doLogout().then(res => {
+                let params = {
+                    token: Cookies.get('_hr_token')
+                };
+                this.$api.doLogout(params).then(res => {
                     tool.clearCookies();
                     this.$message({
                         type: 'success',
