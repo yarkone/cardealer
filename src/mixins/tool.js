@@ -2,7 +2,7 @@
  * @Author: yarkone 
  * @Date: 2018-11-05 10:22:51 
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-19 15:39:06
+ * @Last Modified time: 2018-11-20 17:47:50
  */
 import Cookies from 'js-cookie'
 
@@ -51,5 +51,12 @@ export const tool = {
 	    for (t in e)
 	        return !1;
 	    return !0
-	}
+    },
+    /**
+     * 滚动条滚动到number位置
+     */
+    scrollTop: function(number) {
+        document.body.scrollTop = number;
+        document.documentElement.scrollTop = number;
+    }
 }

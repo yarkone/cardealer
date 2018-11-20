@@ -2,7 +2,7 @@
  * @Author: yarkone
  * @Date: 2018-09-11 11:34:57
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-19 15:35:57
+ * @Last Modified time: 2018-11-20 14:03:27
  */
 import axios from './api'
 
@@ -45,6 +45,15 @@ export const menuTree = () => {
     })
 }
 
+// 贷款办理接口
+export const loanOrderWorkbench = data => {
+    return axios({
+        url: 'loanOrder/workbench',
+        method: 'post',
+        data
+    })
+}
+
 export const list = (id) => {
     return axios({
         url: `/list${id}`,
@@ -66,6 +75,7 @@ export default {
     doLogout,
     msgInterval,
     menuTree,
+    loanOrderWorkbench,
 
 
     list,

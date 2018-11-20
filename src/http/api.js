@@ -2,7 +2,7 @@
  * @Author: yarkone 
  * @Date: 2018-09-10 17:39:52 
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-14 11:45:00
+ * @Last Modified time: 2018-11-20 18:39:46
  */
 import axios from 'axios'
 import config from './config'
@@ -33,7 +33,10 @@ export default function $axios(options) {
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
         // console.log('准备发送请求...')
         loadingInstance = Loading.service({
-          fullscreen: true
+          fullscreen: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
         });
         // 2. 带上token
         if (token) {

@@ -4,8 +4,9 @@
         <left-menu></left-menu>
         <section class="console">
             <keep-alive>
-                <router-view></router-view>
+                <router-view v-if="$route.meta.keepAlive"></router-view>
             </keep-alive>
+            <router-view v-if="!$route.meta.keepAlive"></router-view>
         </section>
     </div>
 </template>
@@ -13,14 +14,12 @@
 <script>
     import headTop from '@/components/headTop'
     import leftMenu from '@/components/leftMenu'
-    import console from '@/components/console'
 
     export default {
         name: 'index',
         components: {
             headTop,
-            leftMenu,
-            console
+            leftMenu
         },
         data () {
 			return {

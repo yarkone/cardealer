@@ -1,14 +1,14 @@
 <template>
-    <el-menu :default-active="defaultActive" style="position: fixed;z-index: 10;left: 0;top: 60px;bottom: 0;width: 200px; overflow-x: hidden;border-radius:0;" theme="dark" router>
+    <el-menu :default-active="defaultActive" :default-openeds="defaultOpeneds" style="position: fixed;z-index: 10;left: 0;top: 60px;bottom: 0;width: 200px; overflow-x: hidden;border-radius:0;background-color: #fff;" router>
         <template v-for="(item, index) in menuObj" >
             <template v-if="!item.length">
-                <el-menu-item index="index" :key="index"><i class="el-icon-menu"></i>{{index}}{{menuTreeMap[index]}}{{menuTreeMap.loanProcess.name}}</el-menu-item>
+                <el-menu-item :index="index" :key="index"><i class="el-icon-menu"></i>{{ menuTreeMap[index] && menuTreeMap[index].name || index }}</el-menu-item>
             </template>
             <template v-else>
-                <el-submenu :index="item.length.toString()" :key="index">
-                    <template slot="title"><i class="el-icon-document"></i>{{menuTreeMap[index]}}</template>
+                <el-submenu :index="index" :key="index">
+                    <template slot="title"><i class="el-icon-document"></i>{{ menuTreeMap[index] && menuTreeMap[index].name || index }}</template>
                     <template v-for="(item1, index2) in item" >
-                        <el-menu-item :index="item1" :key="index2">{{menuTreeMap[index]}}</el-menu-item>
+                        <el-menu-item :index="item1" :key="index2">{{ menuTreeMap[item1] && menuTreeMap[item1].name || item1 }}</el-menu-item>
                     </template>
                 </el-submenu>
             </template>
@@ -26,7 +26,8 @@
         data () {
 			return {
                 menuObj: {},
-                menuTreeMap: {}
+                menuTreeMap: {},
+                fistMenu: 'loanProcess'
             }
         },
         created () {
@@ -35,22 +36,35 @@
                 console.log(res);
                 this.menuObj = res.data;
                 this.menuTreeMap = menuTreeMap;
-                // console.log(menuTreeMap)
-                // console.log(menuTreeMap['loanProcess'].name)
             }).catch(error => {
                 console.log(error);
             })
         },
 		mounted () {
-			
+
 		},
         methods: {
             
         },
         computed: {
-			defaultActive: function(){
-				return this.$route.path.replace('/', '');
-			}
+			defaultActive: function() {
+                let firstMenu = '';
+                for(let i in this.menuObj) {
+                    firstMenu = i;
+                    break;
+                }
+                this.$router.push(firstMenu);
+				return firstMenu;
+            },
+            defaultOpeneds: function() {
+                let arr = [];
+                for(let i in this.menuObj) {
+                    if(this.menuObj[i].length) {
+                        arr.push(i);
+                    }
+                }
+                return arr;
+            }
 		}
     }
 </script>

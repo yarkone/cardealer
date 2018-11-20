@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import login from '@/pages/login'
 import index from '@/pages/index'
+import loanProcess from '@/pages/loanProcess'
+import myCustomer from '@/pages/myCustomer'
 
 Vue.use(Router)
 
@@ -20,12 +23,16 @@ export default new Router({
     {
         path: '/index',
         name: 'index',
-        component: index
-    },
-    // {
-    //     path: '/loanProcess',
-    //     name: 'loanProcess',
-    //     component: loanProcess
-    // }
+        component: index,
+        children: [{
+			path: '/loanProcess',
+            component: loanProcess,
+			meta: [],
+		},{
+			path: '/myCustomer',
+			component: myCustomer,
+			meta: [],
+		}]
+    }
   ]
 })
