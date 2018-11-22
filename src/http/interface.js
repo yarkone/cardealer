@@ -2,7 +2,7 @@
  * @Author: yarkone
  * @Date: 2018-09-11 11:34:57
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-21 18:11:16
+ * @Last Modified time: 2018-11-22 11:19:23
  */
 import axios from './api'
 
@@ -54,6 +54,22 @@ export const loanOrderWorkbench = data => {
     })
 }
 
+//选择银行
+export const demandBankSelectBank = () => {
+    return axios({
+        url: '/demandBank/selectBank',
+        method: 'get'
+    })
+}
+
+//分公司
+export const pmsDeptGetPmsDeptList = () => {
+    return axios({
+        url: '/pmsDept/getPmsDeptList',
+        method: 'get'
+    })
+}
+
 //解锁接口
 export const taskLock = data => {
     return axios({
@@ -86,6 +102,8 @@ export default {
     menuTree,
     loanOrderWorkbench,
     taskLock,
+    demandBankSelectBank,
+    pmsDeptGetPmsDeptList,
 
 
     list,

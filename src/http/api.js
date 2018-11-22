@@ -2,7 +2,7 @@
  * @Author: yarkone 
  * @Date: 2018-09-10 17:39:52 
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-21 17:49:00
+ * @Last Modified time: 2018-11-22 10:40:11
  */
 import axios from 'axios'
 import config from './config'
@@ -15,7 +15,29 @@ import store from '@/store'
 // 使用vuex做全局loading时使用
 // import store from '@/store'
 
-var loadingInstance, authorityTip;
+let loadingInstance, authorityTip, requestingCount = 0;
+
+const startLoading = () => {
+    loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+    });
+}
+
+const stopLoading = () => {
+    loadingInstance.close();
+}
+
+const handleRequestLoading = () => {
+    if (!requestingCount)  startLoading();
+    requestingCount++
+}
+const handleResponseLoading = () => {
+    requestingCount--
+    if (!requestingCount)  stopLoading();
+}
 
 export default function $axios(options) {
   return new Promise((resolve, reject) => {
@@ -32,29 +54,10 @@ export default function $axios(options) {
         let token = Cookies.get('_hr_token')
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
         // console.log('准备发送请求...')
-        loadingInstance = Loading.service({
-          fullscreen: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        });
+        handleRequestLoading();
         // 2. 带上token
         if (token) {
           config.headers.Authorization = 'Bearer ' + token
-        } else {
-            // if(router.history.current.path != '/') {
-            //     // 如果不是首页且token已不存在，需重定向到登录页面
-            //     MessageBox('你的登录授权无效或已过期', '提示', {
-            //         showClose: false
-            //     }).then(() => {
-            //         tool.clearCookies();
-            //         Message({
-            //             type: 'success',
-            //             message: '退出成功'
-            //         });
-            //         router.push('/');
-            //     });
-            // }
         }
         // 3. 根据请求方法，序列化传来的参数，根据后端需求是否序列化
         if (config.method === 'post') {
@@ -71,6 +74,7 @@ export default function $axios(options) {
       },
 
       error => {
+        handleResponseLoading();
         // 请求错误时
         console.log('request:', error)
         // 1. 判断请求超时
@@ -96,7 +100,7 @@ export default function $axios(options) {
     instance.interceptors.response.use(
       response => {
         //guanbi loading
-        loadingInstance.close();
+        handleResponseLoading();
 
         let data;
         
@@ -142,6 +146,7 @@ export default function $axios(options) {
         }
       },
       err => {
+        handleResponseLoading();
         if (err && err.response) {
           switch (err.response.status) {
             case 400:

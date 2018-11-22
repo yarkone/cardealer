@@ -1,5 +1,42 @@
 <template>
     <div>
+        <div class="select-area">
+            <div class="demo-input-suffix">
+                经办银行：
+                <el-select 
+                v-model="params.demandBankId" 
+                placeholder="全部"
+                clearable
+                @visible-change="selectBank"
+                @change="loadData">
+                    <el-option
+                    v-for="item in bankOptions"
+                    :key="item.id"
+                    :label="item.bankName"
+                    :value="item.id">
+                    </el-option>
+                </el-select>
+            </div>
+            <div class="demo-input-suffix">
+                分公司：
+                <el-select 
+                v-model="params.deptId" 
+                placeholder="全部"
+                clearable
+                @visible-change="getPmsDeptList"
+                @change="loadData">
+                    <el-option
+                    v-for="item in deptOptions"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                    </el-option>
+                </el-select>
+            </div>
+            <div class="demo-input-suffix">
+                <el-input v-model="params.fuzzyParam" style="width: 300px;" placeholder="订单号\借款人姓名\身份证号\手机号"></el-input>
+            </div>
+        </div>
         <el-table
             :data="tableData"
             style="width: 100%"
@@ -34,7 +71,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             layout="total, sizes, prev, pager, next, jumper"
-            :page-sizes="[10, 15, 15, 20, 25, 50, 100]"
+            :page-sizes="[10, 15, 20, 25, 50, 100]"
             :page-size="page.pageSize"
             :page-count="page.pages"
             :total="page.total">
@@ -50,6 +87,10 @@
         name: 'loanProcess',
         data () {
 			return {
+                bankOptions: [],
+                deptOptions: [],
+                hasBankload: false,
+                hasDeptload: false,
                 tableProps: [{prop: '', label: '任务生成时间', width: '120'},
                             {prop: 'orderNo', label: '订单号', width: '250'},
                             {prop: 'realName', label: '借款人', width: ''},
@@ -64,7 +105,10 @@
                 page: {},
                 params: {
                     pageNum: 1,
-                    pageSize: 20
+                    pageSize: 20,
+                    demandBankId: '',
+                    deptId: '',
+                    fuzzyParam: ''
                 }
             }
         },
@@ -85,6 +129,26 @@
                 }).catch(error => {
                     console.log(error);
                 })
+            },
+            selectBank(boolean) {
+                if(boolean && !this.hasBankload)
+                    this.$api.demandBankSelectBank().then(res => {
+                        this.hasBankload = true;
+                        this.bankOptions = res.data;
+                    }).catch(error => {
+                        this.hasBankload = false;
+                        console.log(error);
+                    })
+            },
+            getPmsDeptList(boolean) {
+                if(boolean && !this.hasDeptload)
+                    this.$api.pmsDeptGetPmsDeptList().then(res => {
+                        this.hasDeptload = true;
+                        this.deptOptions = res.data;
+                    }).catch(error => {
+                        this.hasDeptload = false;
+                        console.log(error);
+                    })
             },
             handleSizeChange(val) {
                 this.params.pageSize = val;
@@ -138,5 +202,15 @@
 <style lang="less">
 	@import "../style/defined";
 	@import '../style/public';
-	@import '../style/components';
+    @import '../style/components';
+    .select-area {
+        border: 1px solid @borderColor;
+        background: #fff;
+        padding: 20px 40px;
+        border-bottom: 0;
+    }
+    .demo-input-suffix {
+        display: inline-block;
+        margin-right: 15px;
+    }
 </style>
