@@ -39,8 +39,8 @@
         </div>
         <el-table
             :data="tableData"
-            style="width: 100%"
             :stripe="true"
+            :show-header="true"
             :fit="true">
             <el-table-column v-for="(item, index) in tableProps" :prop="item.prop" :label="item.label" :width="item.width" :key="index">
                 <template slot-scope="scope">

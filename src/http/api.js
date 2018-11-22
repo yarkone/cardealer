@@ -2,7 +2,7 @@
  * @Author: yarkone 
  * @Date: 2018-09-10 17:39:52 
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-22 10:40:11
+ * @Last Modified time: 2018-11-22 16:06:36
  */
 import axios from 'axios'
 import config from './config'
@@ -128,10 +128,6 @@ export default function $axios(options) {
                 let done = function() {
                     authorityTip = false;
                     tool.clearCookies();
-                    Message({
-                        type: 'success',
-                        message: '退出成功'
-                    });
                     router.push('/');
                 }
                 MessageBox(data.msg || '', '提示').then(() => {
