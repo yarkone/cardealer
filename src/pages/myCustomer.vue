@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height: 2000px;background: #ccff00;">
         我是我的客户
     </div>
 </template>

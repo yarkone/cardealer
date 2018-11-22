@@ -4,94 +4,27 @@
             :data="tableData"
             style="width: 100%"
             :stripe="true"
-            :fit="true"
-            empty-text="-">
-            <!-- <template v-for="(item, index) in tableProps">
-                <el-table-column :prop="item.prop" :label="item.label" :width="item.width" :key="index" align="center">
-                    <template v-if="index === 0">
-                        <template slot-scope="scope">
-                            {{item.label}}<span>{{ scope.row.loanTasks && scope.row.loanTasks.length && scope.row.loanTasks[0].createDateStr }}</span>
+            :fit="true">
+            <el-table-column v-for="(item, index) in tableProps" :prop="item.prop" :label="item.label" :width="item.width" :key="index">
+                <template slot-scope="scope">
+                    <template v-if="item.label === '任务生成时间'">
+                        <span>{{ scope.row.loanTasks && scope.row.loanTasks.length && scope.row.loanTasks[0].createDateStr || '--' }}</span>
+                    </template>
+                    <template v-else-if="item.label === '当前进度'">
+                        <template v-for="(item1, index2) in scope.row.loanTasks">
+                            <span :key="index2">{{ item1.taskName }}<br/></span>
                         </template>
                     </template>
-                    <template v-if="item.label === '当前进度'">
-                        <template slot-scope="scope">
-                            <template v-for="(item, index) in scope.row.loanTasks">
-                                <span :key="index">{{ item.taskName }}<br/></span>
-                            </template>
-                        </template>
+                    <template v-else-if="item.label === '当前操作人'">
+                        {{ scope.row.loanTasks && scope.row.loanTasks.length && scope.row.loanTasks[0].operatorName || '--' }}
                     </template>
-                    <template v-if="item.label === '当前操作人'">
-                        <template slot-scope="scope">
-                            <span>{{ scope.row.loanTasks && scope.row.loanTasks.length && scope.row.loanTasks[0].operatorName || '-' }}</span>
-                        </template>
+                    <template v-else-if="item.label === '操作'">
+                        <el-button type="primary" size="small" @click="handle">立即处理</el-button>
+                        <el-button type="primary" size="small" v-show="scope.row.loanTasks[0].lock && scope.row.loanTasks[0].lockMack" @click="openOrder(scope.$index)">解锁</el-button>
                     </template>
-                    <template v-if="item.label === '操作'">
-                        <template slot-scope="scope">
-                            <el-button type="primary" size="small">立即处理</el-button>
-                            <el-button type="primary" size="small">解锁</el-button>
-                        </template>
+                    <template v-else>
+                        {{ scope.row[item.prop] || '--' }}
                     </template>
-                </el-table-column>
-            </template> -->
-
-            <el-table-column
-                label="任务生成时间"
-                min-width="100">
-                <template slot-scope="scope">
-                    <span>{{ scope.row.loanTasks && scope.row.loanTasks.length && scope.row.loanTasks[0].createDateStr }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="orderNo"
-                label="订单号"
-                min-width="210">
-            </el-table-column>
-            <el-table-column
-                prop="realName"
-                label="借款人">
-                <template slot-scope="scope">
-                    <span>{{ scope.row.realName || '-' }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="demandBankName"
-                label="经办银行">
-            </el-table-column>
-            <el-table-column
-                prop="busiSourceName"
-                label="进件来源">
-            </el-table-column>
-            <el-table-column
-                prop="acceptName"
-                label="经办人">
-            </el-table-column>
-            <el-table-column
-                prop="deptName"
-                label="分公司">
-            </el-table-column>
-            <el-table-column
-                label="当前进度"
-                min-width="120">
-                <template slot-scope="scope">
-                    <template v-for="(item, index) in scope.row.loanTasks">
-                        <span :key="index">{{ item.taskName }}<br/></span>
-                    </template>
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="operatorName"
-                label="当前操作人"
-                min-width="95">
-                <template slot-scope="scope">
-                    <span>{{ scope.row.loanTasks && scope.row.loanTasks.length && scope.row.loanTasks[0].operatorName || '-' }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                label="操作"
-                min-width="170">
-                <template slot-scope="scope">
-                    <el-button type="primary" size="small">立即处理</el-button>
-                    <el-button type="primary" size="small">解锁</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -117,7 +50,7 @@
         name: 'loanProcess',
         data () {
 			return {
-                tableProps: [{prop: '', label: '任务生成时间', width: ''},
+                tableProps: [{prop: '', label: '任务生成时间', width: '120'},
                             {prop: 'orderNo', label: '订单号', width: '250'},
                             {prop: 'realName', label: '借款人', width: ''},
                             {prop: 'demandBankName', label: '经办银行', width: ''},
@@ -125,7 +58,7 @@
                             {prop: 'acceptName', label: '经办人', width: ''},
                             {prop: 'deptName', label: '分公司', width: ''},
                             {prop: '', label: '当前进度', width: '120'},
-                            {prop: '', label: '当前操作人', width: ''},
+                            {prop: '', label: '当前操作人', width: '125'},
                             {prop: '', label: '操作', width: '170'}],
                 tableData: [],
                 page: {},
@@ -142,22 +75,55 @@
 			
 		},
         methods: {
-            loadData: function() {
+            loadData(cb) {
                 this.$api.loanOrderWorkbench(this.params).then(res => {
                     this.tableData = res.data || [];
                     this.page = res.page;
-                    tool.scrollTop(0);
+                    if(cb && typeof cb == 'function') {
+                        cb();
+                    }
                 }).catch(error => {
                     console.log(error);
                 })
             },
             handleSizeChange(val) {
                 this.params.pageSize = val;
-                this.loadData();
+                this.loadData(tool.scrollTop(0));
             },
             handleCurrentChange(val) {
                 this.params.pageNum = val;
-                this.loadData();
+                this.loadData(tool.scrollTop(0));
+            },
+            handle() {
+
+            },
+            openOrder(idx) {
+                let ids = [];
+                console.log(idx)
+                this.tableData[idx].loanTasks.forEach(function(item ,index) {
+                    ids.push(item.id);
+                });
+                let params = {
+                    type: 1,
+                    ids: ids.join(',')
+                };
+                this.$confirm('确认解锁改订单吗？', '提示', {
+                    lock: true,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                }).then(() => {
+                    this.$api.taskLock(params).then(res => {
+                        this.loadData(() => {
+                            this.$message({
+                                type: 'success',
+                                message: '解锁成功!'
+                            });
+                        });
+                    }).catch(error => {
+                        console.log(error);
+                    })
+                }).catch(() => {});
+                
             }
         },
         watch: {

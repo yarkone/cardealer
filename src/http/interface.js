@@ -2,7 +2,7 @@
  * @Author: yarkone
  * @Date: 2018-09-11 11:34:57
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-20 14:03:27
+ * @Last Modified time: 2018-11-21 18:11:16
  */
 import axios from './api'
 
@@ -54,6 +54,15 @@ export const loanOrderWorkbench = data => {
     })
 }
 
+//解锁接口
+export const taskLock = data => {
+    return axios({
+        url: 'task/lock',
+        method: 'post',
+        data
+    })
+}
+
 export const list = (id) => {
     return axios({
         url: `/list${id}`,
@@ -76,6 +85,7 @@ export default {
     msgInterval,
     menuTree,
     loanOrderWorkbench,
+    taskLock,
 
 
     list,

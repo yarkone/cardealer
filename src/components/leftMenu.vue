@@ -26,29 +26,27 @@
         data () {
 			return {
                 menuObj: {},
-                menuTreeMap: {},
-                fistMenu: 'loanProcess'
+                menuTreeMap: {}
             }
         },
         created () {
-            let that = this;
-            that.$api.menuTree().then(res => {
+            
+        },
+		mounted () {
+            this.$api.menuTree().then(res => {
                 console.log(res);
                 this.menuObj = res.data;
                 this.menuTreeMap = menuTreeMap;
             }).catch(error => {
                 console.log(error);
             })
-        },
-		mounted () {
-
 		},
         methods: {
             
         },
         computed: {
 			defaultActive: function() {
-                let firstMenu = '';
+                let firstMenu = 'loanProcess';
                 for(let i in this.menuObj) {
                     firstMenu = i;
                     break;

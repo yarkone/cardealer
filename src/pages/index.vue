@@ -27,9 +27,9 @@
             }
         },
         computed: {
-			defaultActive: function(){
-				return this.$route.path.replace('/', '');
-			}
+			// defaultActive: function(){
+			// 	return this.$route.path.replace('/', '');
+			// }
 		},
 		mounted () {
 			

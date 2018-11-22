@@ -2,7 +2,7 @@
  * @Author: yarkone 
  * @Date: 2018-09-10 17:39:52 
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-20 18:39:46
+ * @Last Modified time: 2018-11-21 17:49:00
  */
 import axios from 'axios'
 import config from './config'
@@ -15,7 +15,7 @@ import store from '@/store'
 // 使用vuex做全局loading时使用
 // import store from '@/store'
 
-var loadingInstance;
+var loadingInstance, authorityTip;
 
 export default function $axios(options) {
   return new Promise((resolve, reject) => {
@@ -42,10 +42,19 @@ export default function $axios(options) {
         if (token) {
           config.headers.Authorization = 'Bearer ' + token
         } else {
-            if(router.history.current.path != '/') {
-                // 如果不是首页且token已不存在，需重定向到登录页面
-                router.push('/');
-            }
+            // if(router.history.current.path != '/') {
+            //     // 如果不是首页且token已不存在，需重定向到登录页面
+            //     MessageBox('你的登录授权无效或已过期', '提示', {
+            //         showClose: false
+            //     }).then(() => {
+            //         tool.clearCookies();
+            //         Message({
+            //             type: 'success',
+            //             message: '退出成功'
+            //         });
+            //         router.push('/');
+            //     });
+            // }
         }
         // 3. 根据请求方法，序列化传来的参数，根据后端需求是否序列化
         if (config.method === 'post') {
@@ -104,21 +113,27 @@ export default function $axios(options) {
           default:
             //处理错误
             console.log('非法code:' + data.code)
-            if(router.history.current.path == '/') {console.log('hhhhhhhhhhhhh');
+            if(router.history.current.path == '/') {
                 // 如果是登录页
                 MessageBox('登录失败，检查后再重试', '提示', {
                     showClose: false
                 });
             } else {
-                MessageBox(data.msg || '', '提示', {
-                    showClose: false
-                }).then(() => {
+                if(authorityTip) return Promise.reject(data);
+                authorityTip = true;
+                let done = function() {
+                    authorityTip = false;
                     tool.clearCookies();
                     Message({
                         type: 'success',
                         message: '退出成功'
                     });
                     router.push('/');
+                }
+                MessageBox(data.msg || '', '提示').then(() => {
+                    done();
+                }).catch(() => {
+                    done();     
                 });
             }
             return Promise.reject(data);
