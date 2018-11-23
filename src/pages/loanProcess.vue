@@ -4,7 +4,8 @@
             <div class="demo-input-suffix">
                 经办银行：
                 <el-select 
-                v-model="params.demandBankId" 
+                v-model="params.demandBankId"
+                :title="selectTitle.bankName"
                 placeholder="全部"
                 clearable
                 @visible-change="selectBank"
@@ -13,14 +14,16 @@
                     v-for="item in bankOptions"
                     :key="item.id"
                     :label="item.bankName"
-                    :value="item.id">
+                    :value="item.id"
+                    :title="item.bankName">
                     </el-option>
                 </el-select>
             </div>
             <div class="demo-input-suffix">
                 分公司：
                 <el-select 
-                v-model="params.deptId" 
+                v-model="params.deptId"
+                :title="selectTitle.deptName"
                 placeholder="全部"
                 clearable
                 @visible-change="getPmsDeptList"
@@ -29,12 +32,17 @@
                     v-for="item in deptOptions"
                     :key="item.id"
                     :label="item.name"
-                    :value="item.id">
+                    :value="item.id"
+                    :title="item.name">
                     </el-option>
                 </el-select>
             </div>
             <div class="demo-input-suffix">
                 <el-input v-model="params.fuzzyParam" style="width: 300px;" placeholder="订单号\借款人姓名\身份证号\手机号"></el-input>
+            </div>
+            <div class="demo-input-suffix">
+                <a href="javascript:;" @click="reset">重置</a>
+                <el-button type="primary" @click="loadData">搜索</el-button>
             </div>
         </div>
         <el-table
@@ -109,6 +117,10 @@
                     demandBankId: '',
                     deptId: '',
                     fuzzyParam: ''
+                },
+                selectTitle: {
+                    bankName: '',
+                    deptName: ''
                 }
             }
         },
@@ -119,10 +131,30 @@
 			
 		},
         methods: {
+            reset() {
+                this.params = {
+                    pageNum: 1,
+                    pageSize: 20,
+                    demandBankId: '',
+                    deptId: '',
+                    fuzzyParam: ''
+                };
+                this.loadData();
+            },
             loadData(cb) {
                 this.$api.loanOrderWorkbench(this.params).then(res => {
                     this.tableData = res.data || [];
                     this.page = res.page;
+
+                    //此处为避免下拉框过短，造成选中之后看不见内容的问题，故加上title用于鼠标移上显示
+                    let arr1 = this.bankOptions.filter((item)=>{
+                        return item.id === this.params.demandBankId;
+                    }), arr2 = this.deptOptions.filter((item)=>{
+                        return item.id === this.params.deptId;
+                    });
+                    this.selectTitle.bankName = arr1.length && arr1[0].bankName || '';
+                    this.selectTitle.deptName = arr2.length && arr2[0].name || '';
+                    
                     if(cb && typeof cb == 'function') {
                         cb();
                     }
@@ -163,7 +195,6 @@
             },
             openOrder(idx) {
                 let ids = [];
-                console.log(idx)
                 this.tableData[idx].loanTasks.forEach(function(item ,index) {
                     ids.push(item.id);
                 });
@@ -212,5 +243,6 @@
     .demo-input-suffix {
         display: inline-block;
         margin-right: 15px;
+        margin-bottom: 10px;
     }
 </style>
