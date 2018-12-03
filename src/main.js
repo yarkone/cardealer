@@ -4,7 +4,7 @@ import Vue from 'vue'
 import Element from 'element-ui'
 import App from './App'
 import router from './router'
-import store from './store'
+// import store from './store/index'
 import 'element-ui/lib/theme-default/index.css'
 import api from './http/index'
 
@@ -17,7 +17,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-  store,
+//   store,
   components: { App },
   template: '<App/>'
 })

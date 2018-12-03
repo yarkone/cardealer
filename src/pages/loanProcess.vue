@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- <bread-crumb :prop="location"></bread-crumb> -->
         <div class="select-area">
             <div class="demo-input-suffix">
                 经办银行：
@@ -64,7 +65,7 @@
                         {{ scope.row.loanTasks && scope.row.loanTasks.length && scope.row.loanTasks[0].operatorName || '--' }}
                     </template>
                     <template v-else-if="item.label === '操作'">
-                        <el-button type="primary" size="small" @click="handle">立即处理</el-button>
+                        <el-button type="primary" size="small" @click="handle(scope.$index, scope.row)">立即处理</el-button>
                         <el-button type="primary" size="small" v-show="scope.row.loanTasks[0].lock && scope.row.loanTasks[0].lockMack" @click="openOrder(scope.$index)">解锁</el-button>
                     </template>
                     <template v-else>
@@ -90,11 +91,16 @@
 <script>
     import Cookies from 'js-cookie'
     import { tool } from '../mixins/tool'
+    import breadCrumb from '@/components/breadCrumb'
 
     export default {
         name: 'loanProcess',
+        components: {
+            breadCrumb
+        },
         data () {
 			return {
+                location: {},
                 bankOptions: [],
                 deptOptions: [],
                 hasBankload: false,
@@ -155,7 +161,7 @@
                     this.selectTitle.bankName = arr1.length && arr1[0].bankName || '';
                     this.selectTitle.deptName = arr2.length && arr2[0].name || '';
                     
-                    if(cb && typeof cb == 'function') {
+                    if(cb && typeof cb === 'function') {
                         cb();
                     }
                 }).catch(error => {
@@ -190,12 +196,18 @@
                 this.params.pageNum = val;
                 this.loadData(tool.scrollTop(0));
             },
-            handle() {
-
+            handle(index, row) {
+                if (row.loanTasks && row.loanTasks.length) {
+                    console.log(tool.redirect(row.loanTasks))
+                    this.$router.push({
+                        path: row.loanTasks[0].category,
+                        query: tool.redirect(row.loanTasks)
+                    })
+                }
             },
             openOrder(idx) {
                 let ids = [];
-                this.tableData[idx].loanTasks.forEach(function(item ,index) {
+                this.tableData[idx].loanTasks.forEach((item ,index) => {
                     ids.push(item.id);
                 });
                 let params = {

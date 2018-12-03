@@ -4,10 +4,13 @@
         <left-menu></left-menu>
         <section class="console">
             <bread-crumb></bread-crumb>
-            <keep-alive>
+            <keep-alive :include="includedComponents" :exclude="excludedComponents">
                 <router-view v-if="$route.meta.keepAlive"></router-view>
             </keep-alive>
-            <router-view v-if="!$route.meta.keepAlive"></router-view>
+            <!-- <keep-alive>
+                <router-view v-if="$route.meta.keepAlive"></router-view>
+            </keep-alive>
+            <router-view v-if="!$route.meta.keepAlive"></router-view> -->
         </section>
     </div>
 </template>
@@ -26,13 +29,14 @@
         },
         data () {
 			return {
-                
             }
         },
         computed: {
 			// defaultActive: function(){
 			// 	return this.$route.path.replace('/', '');
-			// }
+            // }
+            includedComponents:state => state.includedComponents,
+            excludedComponents:state => state.excludedComponents
 		},
 		mounted () {
 			

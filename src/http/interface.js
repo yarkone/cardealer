@@ -2,7 +2,7 @@
  * @Author: yarkone
  * @Date: 2018-09-11 11:34:57
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-22 11:19:23
+ * @Last Modified time: 2018-12-03 14:21:57
  */
 import axios from './api'
 
@@ -57,6 +57,7 @@ export const loanOrderWorkbench = data => {
 //选择银行
 export const demandBankSelectBank = () => {
     return axios({
+        hideLoading: true,
         url: '/demandBank/selectBank',
         method: 'get'
     })
@@ -65,6 +66,7 @@ export const demandBankSelectBank = () => {
 //分公司
 export const pmsDeptGetPmsDeptList = () => {
     return axios({
+        hideLoading: true,
         url: '/pmsDept/getPmsDeptList',
         method: 'get'
     })

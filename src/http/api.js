@@ -2,7 +2,7 @@
  * @Author: yarkone 
  * @Date: 2018-09-10 17:39:52 
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-11-22 16:06:36
+ * @Last Modified time: 2018-12-03 14:24:20
  */
 import axios from 'axios'
 import config from './config'
@@ -30,8 +30,8 @@ const stopLoading = () => {
     loadingInstance.close();
 }
 
-const handleRequestLoading = () => {
-    if (!requestingCount)  startLoading();
+const handleRequestLoading = (hideLoading) => {
+    if (!requestingCount && !hideLoading)  startLoading();
     requestingCount++
 }
 const handleResponseLoading = () => {
@@ -54,7 +54,7 @@ export default function $axios(options) {
         let token = Cookies.get('_hr_token')
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
         // console.log('准备发送请求...')
-        handleRequestLoading();
+        handleRequestLoading(options.hideLoading);
         // 2. 带上token
         if (token) {
           config.headers.Authorization = 'Bearer ' + token

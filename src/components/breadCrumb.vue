@@ -1,7 +1,10 @@
 <template>
-    <el-breadcrumb separator="/" class="breadCrumb">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+    <el-breadcrumb separator="/" class="breadCrumb" separator-class="el-icon-arrow-right">
+        <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>活动管理</el-breadcrumb-item> -->
+        <el-breadcrumb-item v-for="(item) in levelList" :key="item.path" v-if="item.meta.title">
+            <router-link :to="item.redirect||item.path">{{item.meta.title}}</router-link>
+          </el-breadcrumb-item>
     </el-breadcrumb>
 </template>
 
@@ -14,14 +17,28 @@ import { setInterval } from 'timers';
         name: 'breadCrumb',
         data () {
 			return {
-
+                levelList: null
             }
 		},
 		mounted () {
-            	
+            this.getBreadcrumb();
+            console.log(this.$router.matched);
+            
 		},
         methods: {
-            
+            getBreadcrumb() {
+                let matched = this.$route.matched.filter(item => item.name)
+                const first = matched[0]
+                if (first && first.name !== '首页') {
+                    matched = [{path: '/index', meta: { title: '首页' }}].concat(matched)
+                }
+                this.levelList = matched;
+            }
+        },
+        watch: {
+            $route(to, from) {
+                this.getBreadcrumb();
+            }
         }
     }
 </script>
