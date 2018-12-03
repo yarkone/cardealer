@@ -39,7 +39,8 @@ export default new Router({
                 name: '征信材料上传',
                 component: creditMaterialsUpload,
                 meat: {
-                    title: '征信材料上传'
+                    title: '征信材料上传',
+                    keepAlive: true
                 }
             },{
                 path: '/test',

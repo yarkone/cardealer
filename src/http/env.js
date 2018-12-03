@@ -9,7 +9,7 @@ let routerMode = 'hash';
 let baseImgPath;
 console.log(process.env.NODE_ENV);
 if(process.env.NODE_ENV == 'development') {
-    baseUrl = 'http://192.168.0.187:9999';
+    baseUrl = 'http://114.55.55.41:9999/api/';
     baseImgPath = 'http://192.168.0.187:9999/img/';
 } else {
     baseUrl = '//carloan.hrfax.cn/api';

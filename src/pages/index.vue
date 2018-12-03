@@ -4,9 +4,12 @@
         <left-menu></left-menu>
         <section class="console">
             <bread-crumb></bread-crumb>
-            <keep-alive :include="includedComponents" :exclude="excludedComponents">
-                <router-view v-if="$route.meta.keepAlive"></router-view>
-            </keep-alive>
+            <transition >
+                <keep-alive :include='includePage'>
+                    <router-view v-if="$route.meta.keepAlive" class='router-view'></router-view>
+                    <router-view v-if="!$route.meta.keepAlive" class='router-view'></router-view>
+                    </keep-alive>
+            </transition>
             <!-- <keep-alive>
                 <router-view v-if="$route.meta.keepAlive"></router-view>
             </keep-alive>
@@ -19,6 +22,7 @@
     import headTop from '@/components/headTop'
     import leftMenu from '@/components/leftMenu'
     import breadCrumb from '@/components/breadCrumb'
+    import { mapGetters } from 'vuex';
 
     export default {
         name: 'index',
@@ -32,14 +36,20 @@
             }
         },
         computed: {
+            computed: {
+            ...mapGetters([
+                "includePage"
+            ])
+            }
 			// defaultActive: function(){
 			// 	return this.$route.path.replace('/', '');
             // }
-            includedComponents:state => state.includedComponents,
-            excludedComponents:state => state.excludedComponents
 		},
 		mounted () {
-			
+			if (this.includePage.indexOf("loanProcess") != -1) {//cdata其实就是c页面的name，可以在路由设置name
+                //console.log('有缓存，清除缓存')
+                this.$store.commit('UPDATE_INCLUDE_PAGE', {pageName: 'loanProcess', flag: false});
+            };
 		},
         methods: {
             

@@ -7,13 +7,30 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import * as types from './types'
 Vue.use(Vuex)
-
-const hahaha = (state, data) => {
-    state.includedComponents = data
+const state = {
+    includePage: [],
 }
-
+const actions = {
+}
+const getters = {
+    includePage: state => state.includePage,
+}
+const mutations = {
+    [types.UPDATE_INCLUDE_PAGE] (state, obj) {
+        if(obj.flag){
+            state.includePage.push(obj.pageName);
+        }else{
+            //includePage=[]
+            state.includePage.splice(state.includePage.indexOf(obj.pageName),1);
+        }
+    }
+}
+//导出vue实例
 export default new Vuex.Store({
-	hahaha
+    state,
+    actions,
+    getters,
+    mutations
 })

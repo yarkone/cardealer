@@ -27,6 +27,7 @@ export default {
         }
     },
     mounted () {
+        
         this.$api.menuTree().then(res => {
             console.log(`响应数据：${res}`);
         }).catch(error => {

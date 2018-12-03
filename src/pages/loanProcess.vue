@@ -134,7 +134,12 @@
             this.loadData();
         },
 		mounted() {
-			
+			if (this.includePage.indexOf("loanProcess") == -1) {
+                //如果EditAddress没有缓存，就设置缓存
+                //console.log(this.includePage)
+                //this.UPDATE_INCLUDE_PAGE({pageName: 'loanProcess', flag: true})
+                this.$store.commit('UPDATE_INCLUDE_PAGE', {pageName: 'loanProcess', flag: true});
+            };
 		},
         methods: {
             reset() {
