@@ -13,12 +13,22 @@ export default {
 
         }
     },
+    mounted () {
+        this.loadData();
+    },
     methods: {
+        loadData() {
+            this.$api.menuTree().then(res => {
+                console.warn('page3：请求接口了');
+            }).catch(error => {
+                console.log(error);
+            })
+        },
         back() {
-            this.$router.back();
+            this.$router.go(-1);
         },
         back2() {
-            this.$router.push('loanProcess');
+            this.$router.go(-2);
         }
     }
 }

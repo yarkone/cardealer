@@ -66,6 +66,7 @@
                     </template>
                     <template v-else-if="item.label === '操作'">
                         <el-button type="primary" size="small" @click="handle(scope.$index, scope.row)">立即处理</el-button>
+                        <router-link to="creditMaterialsUpload">征信上传</router-link>
                         <el-button type="primary" size="small" v-show="scope.row.loanTasks[0].lock && scope.row.loanTasks[0].lockMack" @click="openOrder(scope.$index)">解锁</el-button>
                     </template>
                     <template v-else>
@@ -100,6 +101,7 @@
         },
         data () {
 			return {
+                isFirstEnter: false, // 是否第一次进入，默认false
                 location: {},
                 bankOptions: [],
                 deptOptions: [],
@@ -130,17 +132,47 @@
                 }
             }
         },
+        beforeRouteEnter(to, from, next) {
+            // 路由导航钩子，此时还不能获取组件实例 `this`，所以无法在data中定义变量（利用vm除外）
+            // 参考 https://router.vuejs.org/zh-cn/advanced/navigation-guards.html
+            // 所以，利用路由元信息中的meta字段设置变量，方便在各个位置获取。这就是为什么在meta中定义isBack
+            // 参考 https://router.vuejs.org/zh-cn/advanced/meta.html
+            if(from.name === 'creditMaterialsUpload' || from.name === 'test') {
+                to.meta.isBack = true;
+                //判断是从哪个路由过来的，
+                //如果是creditMaterialsUpload过来的，表明当前页面不需要刷新获取新数据，直接用之前缓存的数据即可
+            }
+            
+            next();
+        },
         created () {
-            this.loadData();
+            this.isFirstEnter = true;
+            // 只有第一次进入或者刷新页面后才会执行此钩子函数
+            // 使用keep-alive后（2+次）进入不会再执行此钩子函数
         },
 		mounted() {
-			if (this.includePage.indexOf("loanProcess") == -1) {
-                //如果EditAddress没有缓存，就设置缓存
-                //console.log(this.includePage)
-                //this.UPDATE_INCLUDE_PAGE({pageName: 'loanProcess', flag: true})
-                this.$store.commit('UPDATE_INCLUDE_PAGE', {pageName: 'loanProcess', flag: true});
-            };
-		},
+
+        },
+        activated() {
+            console.log('page1：activated');
+            if(!this.$route.meta.isBack || this.isFirstEnter){
+                // 如果isBack是false，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
+                // 如果isFirstEnter是true，表明是第一次进入此页面或用户刷新了页面，需获取新数据
+                this.params = {
+                    pageNum: 1,
+                    pageSize: 20,
+                    demandBankId: '',
+                    deptId: '',
+                    fuzzyParam: ''
+                };// 把数据清空，可以稍微避免让用户看到之前缓存的数据
+                this.loadData();
+            }
+            // 恢复成默认的false，避免isBack一直是true，导致下次无法获取数据
+            this.$route.meta.isBack = false;
+            // 恢复成默认的false，避免isBack一直是true，导致每次都获取新数据
+            this.isFirstEnter = false;
+        
+        },
         methods: {
             reset() {
                 this.params = {
@@ -154,6 +186,7 @@
             },
             loadData(cb) {
                 this.$api.loanOrderWorkbench(this.params).then(res => {
+                    console.warn('page1：请求接口了');
                     this.tableData = res.data || [];
                     this.page = res.page;
 
@@ -202,10 +235,10 @@
                 this.loadData(tool.scrollTop(0));
             },
             handle(index, row) {
+                console.log(row.loanTasks[0].category);
                 if (row.loanTasks && row.loanTasks.length) {
-                    console.log(tool.redirect(row.loanTasks))
                     this.$router.push({
-                        path: row.loanTasks[0].category,
+                        name: row.loanTasks[0].category,
                         query: tool.redirect(row.loanTasks)
                     })
                 }

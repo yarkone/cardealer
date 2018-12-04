@@ -89,7 +89,6 @@ import { setInterval } from 'timers';
 		mounted () {
             let that = this;
             that.$api.msgInterval().then(res => {
-                console.log(res);
                 this.busiMsgs = res.data.busiMsgs;
                 this.busiMsgs.forEach(function(item ,index) {
                     item.createDate = tool.formatDate(item.createDate);

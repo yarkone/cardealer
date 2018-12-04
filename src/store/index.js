@@ -2,13 +2,14 @@
  * @Author: yarkone 
  * @Date: 2018-11-01 16:00:27 
  * @Last Modified by: yarkone
- * @Last Modified time: 2018-12-03 18:12:21
+ * @Last Modified time: 2018-12-04 10:05:20
  */
 
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as types from './types'
 Vue.use(Vuex)
+
 const state = {
     includePage: [],
 }

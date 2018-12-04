@@ -34,7 +34,6 @@
         },
 		mounted () {
             this.$api.menuTree().then(res => {
-                console.log(res);
                 this.menuObj = res.data;
                 this.menuTreeMap = menuTreeMap;
             }).catch(error => {
@@ -46,9 +45,9 @@
         },
         computed: {
 			defaultActive: function() {
-                let firstMenu = 'loanProcess';
+                let firstMenu = '/index/loanProcess';
                 for(let i in this.menuObj) {
-                    firstMenu = i;
+                    firstMenu = '/index/' + i;
                     break;
                 }
                 this.$router.push(firstMenu);

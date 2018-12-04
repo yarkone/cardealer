@@ -14,49 +14,57 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: '登录页',
+            name: 'login',
             component: login
         },
-        // {
-        //     path: '/login',
-        //     name: 'login',
-        //     component: login
-        // },
         {
             path: '/index',
-            name: '首页',
+            name: 'index',
             component: index,
             children: [{
-                path: '/loanProcess',
-                name: '贷款办理',
+                path: '/index/loanProcess',
+                name: 'loanProcess',
                 component: loanProcess,
-                meta: { 
+                meta: {
                     title: '贷款办理',
-                    keepAlive: true
+                    keepAlive: true, //此组件需要被缓存
+                    isBack: false, //用于判断上一个页面是哪个
+                    isFirstEnter: false //是否第一次进入页面
                 }
             },{
-                path: '/creditMaterialsUpload',
-                name: '征信材料上传',
+                path: '/index/creditMaterialsUpload',
+                name: 'creditMaterialsUpload',
                 component: creditMaterialsUpload,
                 meat: {
                     title: '征信材料上传',
-                    keepAlive: true
+                    keepAlive: true, //此组件需要被缓存
+                    isBack: false, //用于判断上一个页面是哪个
+                    isFirstEnter: false //是否第一次进入页面
                 }
             },{
-                path: '/test',
-                name: '测试',
+                path: '/index/test',
+                name: 'test',
                 component: test,
                 meat: {
-                    title: '测试'
+                    title: '测试',
+                    keepAlive: false
                 }
             },{
-                path: '/myCustomer',
-                name: '我的客户',
+                path: '/index/myCustomer',
+                name: 'myCustomer',
                 component: myCustomer,
                 meta: { 
                     title: '我的客户'
                 }
             }]
         }
-    ]
+    ],
+    mode: 'history',
+    scrollBehavior (to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            return { x: 0, y: 0 }
+        }
+    }
 })

@@ -22,7 +22,6 @@ import { setInterval } from 'timers';
 		},
 		mounted () {
             this.getBreadcrumb();
-            console.log(this.$router.matched);
             
 		},
         methods: {
