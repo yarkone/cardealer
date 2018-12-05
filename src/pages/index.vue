@@ -10,6 +10,7 @@
                     <router-view v-if="!$route.meta.keepAlive" class='router-view'></router-view>
                     </keep-alive>
             </transition> -->
+            <h1>我是首页</h1>
             <keep-alive>
                 <router-view v-if="$route.meta.keepAlive"></router-view>
             </keep-alive>

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import NotFoundComponent from '@/pages/NotFoundComponent'
 import login from '@/pages/login'
 import index from '@/pages/index'
 import loanProcess from '@/pages/loanProcess'
@@ -12,6 +13,10 @@ Vue.use(Router)
 
 export default new Router({
     routes: [
+        { 
+            path: '*',
+            component: NotFoundComponent 
+        },
         {
             path: '/',
             name: 'login',
